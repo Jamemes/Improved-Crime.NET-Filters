@@ -1,0 +1,28 @@
+<table global_key="ACNF">
+	<AssetUpdates id="39921" provider="modworkshop" version="2"/>
+
+	<Hooks>
+		<hook source_file="lib/network/matchmaking/networkmatchmakingsteam" file="matchmake.lua"/>
+		<hook source_file="lib/managers/menumanager" 						file="filters.lua"/>
+    </Hooks>
+
+	<ScriptMods>
+		<mod file="menu.xml" type="custom_xml" target_file="gamedata/menus/start_menu" target_type="menu">
+			<options merge_mode="script_merge"/>
+		</mod>
+    </ScriptMods>
+	
+	<Options build_menu="false" save_file="Advanced_CN_filters.txt">
+		<options>
+			<option name="range_filter" type="bool"/>
+			<option name="one_down_filter" type="bool"/>
+			<option name="mutators_filter" type="bool"/>
+			<option name="modded_filter" type="bool"/>
+			<option name="owner_level_filter" type="number"/>
+			<option name="job_plan" type="number"/>
+			<option name="matchmaking_key" type="bool"/>
+			<option name="search_nickname" type="bool"/>
+			<option name="nickname" type="bool"/>
+		</options>
+	</Options>
+</table>
