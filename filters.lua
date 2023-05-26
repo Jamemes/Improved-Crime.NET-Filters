@@ -9,7 +9,7 @@ Hooks:Add("LocalizationManagerPostInit", "advanced_filters_loc", function(...)
 		menu_plan_exclude_loud = "Exclude Loud",
 		cn_menu_no_lobbies = "No active servers",
 		cn_menu_lobbies_amount = "Servers Online: $amount;",
-		menu_searching_by_nickname = "Search by nickname",
+		menu_searching_by_nickname = "Search by a nickname",
 		menu_nickname_input = "Nickname",
 		menu_matchmake_input = "Search by custom matchmaking key",
 		menu_reset_key = "Reset matchmaking key",
