@@ -1,5 +1,5 @@
 <table global_key="ACNF">
-	<AssetUpdates id="39921" provider="modworkshop" version="2"/>
+	<!-- <AssetUpdates id="39921" provider="modworkshop" version="2"/> -->
 
 	<Hooks>
 		<hook source_file="lib/network/matchmaking/networkmatchmakingsteam" file="matchmake.lua"/>
@@ -23,6 +23,7 @@
 			<option name="matchmaking_key" type="bool"/>
 			<option name="search_nickname" type="bool"/>
 			<option name="nickname" type="bool"/>
+			<option name="custom_key" type="bool"/>
 		</options>
 	</Options>
 </table>

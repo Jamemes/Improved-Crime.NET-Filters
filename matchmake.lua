@@ -6,17 +6,35 @@ NetworkMatchMakingSTEAM._overhaul_keys = {
 	release = "payday2_release_v0.0.22"
 }
 
-local function get_key(mod, link)
+local function find_key(page, str)
+	local _, st = string.find(tostring(page), str)
+	local en, _ = string.find(tostring(page), '"', st + 1)
+	local key = string.sub(tostring(page), st + 1, en - 1)
+	
+	return key
+end
+
+local function get_key(mod, str, link)
 	dohttpreq(link, function(page)
-		local _, st = string.find(tostring(page), 'NetworkMatchMakingSTEAM._BUILD_SEARCH_INTEREST_KEY = \"')
-		local key = string.sub(tostring(page), st + 1, -2)
-		NetworkMatchMakingSTEAM._overhaul_keys[mod] = key
+		NetworkMatchMakingSTEAM._overhaul_keys[mod] = find_key(page, str)
 	end)
 end
 
-get_key("res_gold", "https://raw.githubusercontent.com/payday-restoration/restoration-mod/gold/lua/sc/network/matchmaking/networkmatchmakingsteam.lua")
-get_key("res_dev", "https://raw.githubusercontent.com/payday-restoration/restoration-mod/dev/lua/sc/network/matchmaking/networkmatchmakingsteam.lua")
+local standard_str = 'NetworkMatchMakingSTEAM._BUILD_SEARCH_INTEREST_KEY = \"'
+get_key("res_gold", standard_str, "https://raw.githubusercontent.com/payday-restoration/restoration-mod/gold/lua/sc/network/matchmaking/networkmatchmakingsteam.lua")
+get_key("res_dev", standard_str, "https://raw.githubusercontent.com/payday-restoration/restoration-mod/dev/lua/sc/network/matchmaking/networkmatchmakingsteam.lua")
+get_key("crack", 'deathvox.mm_key_default = \"', "https://raw.githubusercontent.com/Crackdown-PD2/deathvox/master/coredeathvox.lua")
+get_key("crack_experimental", 'deathvox.mm_key_overhaul = \"', "https://raw.githubusercontent.com/Crackdown-PD2/deathvox/master/coredeathvox.lua")
+get_key("hyper", standard_str, "https://raw.githubusercontent.com/fuglore/PD2-Hyper-Heisting/master/lua/networking/networkmatchmakingsteam.lua")
 
+dohttpreq("https://raw.githubusercontent.com/gorgbus/Classic-Heisting-Reborn/main/Classic%20Heisting/states/menumainstate.lua", function(page)
+	NetworkMatchMakingSTEAM._overhaul_keys["classic"] = "payday2_classic_heisting_" .. find_key(page, '_G._new_version = \"')
+end)
+
+dohttpreq("https://raw.githubusercontent.com/gorgbus/Classic-Heisting-Reborn/main/Classic%20Heisting/states/menumainstate.lua", function(page)
+	NetworkMatchMakingSTEAM._overhaul_keys["classic_u24"] = "payday2_classic_heisting_" .. find_key(page, '_G._new_version = \"') .. "u24"
+end)
+	
 local data = NetworkMatchMakingSTEAM.load_user_filters
 function NetworkMatchMakingSTEAM:load_user_filters()
 	data(self)
@@ -34,20 +52,10 @@ function NetworkMatchMakingSTEAM:load_user_filters()
 	managers.network.matchmake:add_lobby_filter("job_plan", job_plan == 3 and 1 or job_plan == 4 and 2 or job_plan, job_plan > 2 and "not_equal" or "equal")
 end
 
-local function set_lobbies_amount(amount)
-	if managers.menu:active_menu().logic:selected_node():parameters().name == "crimenet_filters" then
-		local lobbies_counter = managers.menu:active_menu().logic:selected_node():item("looking_for_lobbies")
-		if lobbies_counter then
-			lobbies_counter:parameters().text_id = tostring(amount)
-		end
-		
-		MenuCallbackHandler:refresh_node(lobbies_counter)
-	end
-end
-
 local data = NetworkMatchMakingSTEAM.search_lobby
 function NetworkMatchMakingSTEAM:search_lobby(friends_only, no_filters)
-	if ACNF.Options:GetValue("matchmaking_key") ~= "standard" then
+	local nick_search_allowed = ACNF.Options:GetValue("nickname") ~= "" and ACNF.Options:GetValue("search_nickname") == "on"
+	if ACNF.Options:GetValue("matchmaking_key") ~= "standard" or nick_search_allowed or ACNF.Options:GetValue("custom_key") ~= "" then
 		self._search_friends_only = friends_only
 
 		if not self:_has_callback("search_lobby") then
@@ -103,7 +111,7 @@ function NetworkMatchMakingSTEAM:search_lobby(friends_only, no_filters)
 			self:_call_callback("search_lobby", info)
 			
 			local amount = table.size(info.room_list)
-			set_lobbies_amount(amount == 0 and managers.localization:text("cn_menu_no_lobbies") or managers.localization:text("cn_menu_lobbies_amount", {amount = amount}))
+			MenuCallbackHandler:set_lobbies_amount(amount == 0 and managers.localization:text("cn_menu_no_lobbies") or managers.localization:text("cn_menu_lobbies_amount", {amount = amount}))
 			managers.menu_component:set_crimenet_players_online(table.size(info.room_list))
 		end
 
@@ -112,12 +120,20 @@ function NetworkMatchMakingSTEAM:search_lobby(friends_only, no_filters)
 		
 		local matchmake_key = NetworkMatchMakingSTEAM._overhaul_keys[ACNF.Options:GetValue("matchmaking_key")]
 		
+		if ACNF.Options:GetValue("custom_key") ~= "" then
+			matchmake_key = ACNF.Options:GetValue("custom_key")
+		end
+		
 		if not matchmake_key then
 			matchmake_key = NetworkMatchMakingSTEAM._BUILD_SEARCH_INTEREST_KEY
 		end
 		
 		local interest_keys = {}
 
+		if nick_search_allowed then
+			table.insert(interest_keys, "owner_name")
+		end
+			
 		if matchmake_key then
 			table.insert(interest_keys, matchmake_key)
 		end
@@ -126,7 +142,11 @@ function NetworkMatchMakingSTEAM:search_lobby(friends_only, no_filters)
 		self.browser:set_distance_filter(self._distance_filter)
 
 		self.browser:set_lobby_filter(matchmake_key, "true", "equal")
-
+		
+		if nick_search_allowed then
+			self.browser:set_lobby_filter("owner_name", ACNF.Options:GetValue("nickname"), "equal")
+		end
+		
 		self.browser:set_max_lobby_return_count(self._lobby_return_count)
 
 		if Global.game_settings.playing_lan then
@@ -136,6 +156,6 @@ function NetworkMatchMakingSTEAM:search_lobby(friends_only, no_filters)
 		end
 	else
 		data(self, friends_only, no_filters)
-		set_lobbies_amount("")
+		MenuCallbackHandler:set_lobbies_amount("")
 	end
 end

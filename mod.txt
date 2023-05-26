@@ -1,0 +1,14 @@
+{
+	"name": "Improved Crime.NET Filters",
+	"description": "",
+	"author": "James",
+	"version": "3",
+	"updates" : [
+		{
+			"identifier" : "improved_filters",
+			"host": {
+				"meta": "https://raw.githubusercontent.com/Jamemes/Improved-Crime.NET-Filters/meta/meta.json"
+			}
+		}
+	]
+}

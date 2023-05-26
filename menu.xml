@@ -14,26 +14,31 @@
 				<option localize="false" text_id="PAYDAY 2 (Vanilla)" value="standard"/>
 				<option localize="false" text_id="Restoration Mod (Gold)" value="res_gold"/>
 				<option localize="false" text_id="Restoration Mod (Dev)" value="res_dev"/>
+				<option localize="false" text_id="Crackdown" value="crack"/>
+				<option localize="false" text_id="Crackdown (Experimental)" value="crack_experimental"/>
+				<option localize="false" text_id="Hyper Heisting" value="hyper"/>
+				<option localize="false" text_id="Classic Heisting" value="classic"/>
+				<option localize="false" text_id="Classic Heisting (U24 Mode)" value="classic_u24"/>
 				<option localize="false" text_id="PAYDAY 2 (Update 52.3)" value="update_52_3"/>
 				<option localize="false" text_id="PAYDAY 2 (Update 37.1)" value="update_37_1"/>
 				<option localize="false" text_id="PAYDAY 2 (Update 24.2)" value="update_24_2"/>
 				<option localize="false" text_id="PAYDAY 2 (Update 10)" value="update_10"/>
 				<option localize="false" text_id="PAYDAY 2 (Release)" value="release"/>
 			</item>
+			<item index="before:item;name='gamemode_filter'" empty_gui_input_limit="28" input_limit="128" callback="matchmake_input_callback" name="matchmake_input" text_id="menu_matchmake_input" type="MenuItemInput"/>
 			
-			<item index="before:item;name='gamemode_filter'" align="right" color="Color.white" font_size="27" name="looking_for_lobbies" no_text="false" size="14" localize="false" text_id="" type="MenuItemDivider"/>
-			<item index="before:item;name='gamemode_filter'" name="divider_matchmaking1" no_text="true" size="10" type="MenuItemDivider" visible_callback="is_win32"/>
-			
+			<item index="before:item;name='gamemode_filter'" name="divider_matchmaking1" no_text="true" size="10" type="MenuItemDivider"/>
 			<item index="before:item;name='gamemode_filter'" callback="choice_allow_searching_by_nickname" name="searching_by_nickname" text_id="menu_searching_by_nickname" type="CoreMenuItemToggle.ItemToggle" visible_callback="is_multiplayer">
 				<option h="24" icon="guis/textures/menu_tickbox" s_h="24" s_icon="guis/textures/menu_tickbox" s_w="24" s_x="24" s_y="24" value="on" w="24" x="24" y="0"/>
 				<option h="24" icon="guis/textures/menu_tickbox" s_h="24" s_icon="guis/textures/menu_tickbox" s_w="24" s_x="0" s_y="24" value="off" w="24" x="0" y="0"/>
 			</item>
-			<item index="before:item;name='gamemode_filter'" empty_gui_input_limit="28" input_limit="128" callback="nickname_input_callback" name="nickname_input" text_id="nickname_input" type="MenuItemInput"/>
-			<item index="before:item;name='gamemode_filter'" callback="choice_owner_level_filter" text_id="menu_host_level" max="100" decimal_count="0" is_scaled="true" name="owner_level_filter" show_value="true" step="1" type="CoreMenuItemSlider.ItemSlider"/>
-			<item index="before:item;name='gamemode_filter'" name="divider_matchmaking1" no_text="true" size="10" type="MenuItemDivider" visible_callback="is_win32"/>
+			<item index="before:item;name='gamemode_filter'" empty_gui_input_limit="28" input_limit="128" callback="nickname_input_callback" name="nickname_input" text_id="menu_nickname_input" type="MenuItemInput"/>
+			<item index="before:item;name='gamemode_filter'" name="divider_matchmaking2" no_text="true" size="10" type="MenuItemDivider"/>
+			<item index="before:item;name='gamemode_filter'" color="Color.white" name="looking_for_lobbies" no_text="false" localize="false" text_id="" type="MenuItemDivider"/>
+			<item index="before:item;name='gamemode_filter'" name="divider_matchmaking3" no_text="true" size="10" type="MenuItemDivider"/>
 			
-			<item index="before:item;name='difficulty_filter'" name="divider_difficulty1" no_text="true" size="8" type="MenuItemDivider" visible_callback="is_win32"/>
-			<item index="after:item;name='difficulty_filter'" name="divider_difficulty2" no_text="true" size="8" type="MenuItemDivider" visible_callback="is_win32"/>
+			<item index="before:item;name='difficulty_filter'" name="divider_difficulty1" no_text="true" size="8" type="MenuItemDivider"/>
+			<item index="after:item;name='difficulty_filter'" name="divider_difficulty2" no_text="true" size="8" type="MenuItemDivider"/>
 			
 			<item search="item;name='job_plan_filter'">
 				<option text_id="menu_plan_exclude_loud" value="3"/>
@@ -63,6 +68,8 @@
 				<option text_id="dialog_yes" value="on"/>
 				<option text_id="dialog_no" value="off"/>
 			</item>
+			
+			<item index="before:item;name='divider_crime_spree'" callback="choice_owner_level_filter" text_id="menu_host_level" max="100" decimal_count="0" is_scaled="true" name="owner_level_filter" show_value="true" step="1" type="CoreMenuItemSlider.ItemSlider"/>
         </node>
    </menu>
 </table>
