@@ -11,7 +11,7 @@ Hooks:Add("LocalizationManagerPostInit", "advanced_filters_loc", function(...)
 		cn_menu_lobbies_amount = "Servers Online: $amount;",
 		menu_searching_by_nickname = "Search by a nickname",
 		menu_nickname_input = "Nickname",
-		menu_matchmake_input = "Search by custom matchmaking key",
+		menu_matchmake_input = "Search by a custom matchmaking key",
 		menu_reset_key = "Reset matchmaking key",
 		
 	})
