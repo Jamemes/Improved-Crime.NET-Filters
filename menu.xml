@@ -17,6 +17,9 @@
 				<option localize="false" text_id="Crackdown" value="crack"/>
 				<option localize="false" text_id="Crackdown (Experimental)" value="crack_experimental"/>
 				<option localize="false" text_id="Hyper Heisting" value="hyper"/>
+				<option localize="false" text_id="Streamlined Heisting" value="streamlined"/>
+				<option localize="false" text_id="Streamlined Heisting (Dev)" value="streamlined_dev"/>
+				<option localize="false" text_id="Streamlined Heisting (Zombie)" value="streamlined_zombie"/>
 				<option localize="false" text_id="Classic Heisting" value="classic"/>
 				<option localize="false" text_id="Classic Heisting (U24 Mode)" value="classic_u24"/>
 				<option localize="false" text_id="PAYDAY 2 (Update 52.3)" value="update_52_3"/>

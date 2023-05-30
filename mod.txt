@@ -2,7 +2,7 @@
 	"name": "Improved Crime.NET Filters",
 	"description": "",
 	"author": "James",
-	"version": "3",
+	"version": "4",
 	"updates" : [
 		{
 			"identifier" : "improved_filters",

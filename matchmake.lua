@@ -1,4 +1,4 @@
-NetworkMatchMakingSTEAM._overhaul_keys = {
+NetworkMatchMakingSTEAM._overhaul_keys = NetworkMatchMakingSTEAM._overhaul_keys or {
 	update_52_3 = "payday2_v1.24.3",
 	update_37_1 = "payday2_v1.15.1",
 	update_24_2 = "payday2_release_v1.6.2",
@@ -34,7 +34,19 @@ end)
 dohttpreq("https://raw.githubusercontent.com/gorgbus/Classic-Heisting-Reborn/main/Classic%20Heisting/states/menumainstate.lua", function(page)
 	NetworkMatchMakingSTEAM._overhaul_keys["classic_u24"] = "payday2_classic_heisting_" .. find_key(page, '_G._new_version = \"') .. "u24"
 end)
-	
+
+dohttpreq("https://raw.githubusercontent.com/segabl/pd2-streamlined-heisting/master/mod.txt", function(page)
+	NetworkMatchMakingSTEAM._overhaul_keys["streamlined"] = NetworkMatchMakingSTEAM._BUILD_SEARCH_INTEREST_KEY .. "_sh_v" .. find_key(page, '"version" : \"')
+end)
+
+dohttpreq("https://raw.githubusercontent.com/segabl/pd2-streamlined-heisting/dev/mod.txt", function(page)
+	NetworkMatchMakingSTEAM._overhaul_keys["streamlined_dev"] = NetworkMatchMakingSTEAM._BUILD_SEARCH_INTEREST_KEY .. "_sh_v" .. find_key(page, '"version" : \"')
+end)
+
+dohttpreq("https://raw.githubusercontent.com/segabl/pd2-streamlined-heisting/zombie/mod.txt", function(page)
+	NetworkMatchMakingSTEAM._overhaul_keys["streamlined_zombie"] = NetworkMatchMakingSTEAM._BUILD_SEARCH_INTEREST_KEY .. "_sh_v" .. find_key(page, '"version" : \"')
+end)
+
 local data = NetworkMatchMakingSTEAM.load_user_filters
 function NetworkMatchMakingSTEAM:load_user_filters()
 	data(self)
@@ -139,15 +151,14 @@ function NetworkMatchMakingSTEAM:search_lobby(friends_only, no_filters)
 		end
 
 		self.browser:set_interest_keys(interest_keys)
-		self.browser:set_distance_filter(self._distance_filter)
-
+		self.browser:set_distance_filter(3)
 		self.browser:set_lobby_filter(matchmake_key, "true", "equal")
 		
 		if nick_search_allowed then
 			self.browser:set_lobby_filter("owner_name", ACNF.Options:GetValue("nickname"), "equal")
 		end
 		
-		self.browser:set_max_lobby_return_count(self._lobby_return_count)
+		self.browser:set_max_lobby_return_count(50)
 
 		if Global.game_settings.playing_lan then
 			self.browser:refresh_lan()
