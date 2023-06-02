@@ -39,14 +39,6 @@ dohttpreq("https://raw.githubusercontent.com/segabl/pd2-streamlined-heisting/mas
 	NetworkMatchMakingSTEAM._overhaul_keys["streamlined"] = NetworkMatchMakingSTEAM._BUILD_SEARCH_INTEREST_KEY .. "_sh_v" .. find_key(page, '"version" : \"')
 end)
 
-dohttpreq("https://raw.githubusercontent.com/segabl/pd2-streamlined-heisting/dev/mod.txt", function(page)
-	NetworkMatchMakingSTEAM._overhaul_keys["streamlined_dev"] = NetworkMatchMakingSTEAM._BUILD_SEARCH_INTEREST_KEY .. "_sh_v" .. find_key(page, '"version" : \"')
-end)
-
-dohttpreq("https://raw.githubusercontent.com/segabl/pd2-streamlined-heisting/zombie/mod.txt", function(page)
-	NetworkMatchMakingSTEAM._overhaul_keys["streamlined_zombie"] = NetworkMatchMakingSTEAM._BUILD_SEARCH_INTEREST_KEY .. "_sh_v" .. find_key(page, '"version" : \"')
-end)
-
 local data = NetworkMatchMakingSTEAM.load_user_filters
 function NetworkMatchMakingSTEAM:load_user_filters()
 	data(self)
